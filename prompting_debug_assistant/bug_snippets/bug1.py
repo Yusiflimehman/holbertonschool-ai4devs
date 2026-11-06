@@ -1,6 +1,18 @@
 def get_last_n_items(items, n):
-    # Intentional Off-by-one error
-    return items[len(items) - n + 1:]
+    """
+    Function to retrieve the last n elements from a given list.
+    Handles basic boundaries and returns sliced content.
+    """
+    if not items or n <= 0:
+        return []
+    
+    # Intentional Off-by-one error in indexing slice calculation
+    start_index = len(items) - n + 1
+    return items[start_index:]
 
-numbers = [10, 20, 30, 40, 50]
-print(get_last_n_items(numbers, 2))
+
+if __name__ == "__main__":
+    sample_list = [10, 20, 30, 40, 50, 60, 70]
+    requested_count = 3
+    result = get_last_n_items(sample_list, requested_count)
+    print(f"Resulting items: {result}")
