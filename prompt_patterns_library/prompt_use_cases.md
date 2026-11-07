@@ -31,7 +31,7 @@
   - **Output**: Optimized algorithms + resource usage notes
 
 ## Documentation
-
+ 
 - **API Documentation**
   - **Goal**: Generate structured inline documentation and API specifications.
   - **Input**: Undocumented module or function
