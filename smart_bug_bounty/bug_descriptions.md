@@ -15,3 +15,7 @@
 ## bug4.py
 - **Intended Behavior**: Safely perform division between two numbers and handle division by zero.
 - **Current Issue**: Missing zero division check, causing an unhandled `ZeroDivisionError` exception when denominator is zero.
+
+## bug5.js
+- **Intended Behavior**: Find and return a user object by matching its ID property.
+- **Current Issue**: Uses single assignment operator (`=`) inside condition instead of strict equality comparison (`===`).
