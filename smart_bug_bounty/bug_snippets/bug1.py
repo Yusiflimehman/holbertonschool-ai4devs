@@ -5,8 +5,7 @@ def get_last_n_items(items, n):
     """
     if not items or n <= 0:
         return []
-    
-    # Intended to return the last n items of the list
+
     # Bug: Incorrect indexing causing off-by-one behavior
     start_index = len(items) - n - 1
     return items[start_index:]
