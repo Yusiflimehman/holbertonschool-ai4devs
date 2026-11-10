@@ -1,19 +1,16 @@
-# Codebase Overview - Legacy E-Commerce API
+# Codebase Overview - Legacy CRM
 
 ## Age
-First release in 2012, last major update in 2018.
+First release in 2009, last major update in 2015.
 
 ## Size
-~65,000 LOC in Python (Flask/SQLAlchemy).
+~45,000 LOC in PHP.
 
 ## Dependencies
-- Python 2.7 (Deprecated)
-- PostgreSQL 9.4
-- Flask 0.12
-- SQLAlchemy 1.1
+- MySQL 5.6
+- Deprecated authentication library
 
 ## Issues
-- Absence of automated unit and integration tests.
-- Monolithic structure with tight coupling between payment and order modules.
-- Deprecated Python version causing security vulnerabilities and dependency mismatches.
-- Hardcoded configuration parameters within service files.
+- No automated tests
+- Mixed procedural and OOP style
+- High coupling between modules
