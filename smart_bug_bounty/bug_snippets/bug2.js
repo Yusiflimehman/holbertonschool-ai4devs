@@ -1,20 +1,30 @@
-function calculateTotalPrice(cartItems, discountPercent) {
-    let total = 0;
-
-    for (let i = 0; i <= cartItems.length; i++) { // Bug: <= causes undefined iteration
-        total += cartItems[i].price;
-    }
-
-    if (discountPercent) {
-        total = total - (total * discountPercent); // Bug: assumes percent is decimal (e.g. 20 instead of 0.2)
-    }
-
-    return total;
+function fetchUserData(userId) {
+    // Fix: Return a Promise to handle asynchronous delay properly
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                id: userId,
+                name: "Alice",
+                role: "Developer"
+            });
+        }, 1000);
+    });
 }
 
-const cart = [
-    { name: "Book", price: 15 },
-    { name: "Pen", price: 5 }
-];
+function processPrices(prices, discountRate) {
+    const discountedPrices = [];
+    
+    // Fix: Correct loop condition from <= to < to prevent out-of-bounds access
+    for (let i = 0; i < prices.length; i++) {
+        const finalPrice = prices[i] * (1 - discountRate);
+        discountedPrices.push(finalPrice);
+    }
+    
+    return discountedPrices;
+}
 
-console.log(calculateTotalPrice(cart, 10));
+(async () => {
+    const userData = await fetchUserData(101);
+    console.log("User Data:", userData);
+    console.log("Discounted Prices:", processPrices([100, 200, 300], 0.1));
+})();
