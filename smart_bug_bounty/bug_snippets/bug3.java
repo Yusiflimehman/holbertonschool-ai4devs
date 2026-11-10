@@ -1,22 +1,31 @@
-public class StringUtils {
-    /**
-     * Utility method to compare two string inputs.
-     * Intended to check equal content value.
-     */
-    public static boolean compareStrings(String str1, String str2) {
-        if (str1 == null || str2 == null) {
-            System.out.println("One or both input strings are null");
-            return false;
-        }
+package bug_snippets;
 
-        System.out.println("Comparing string content equality...");
-        // Bug: Using reference comparison (==) instead of content equality (.equals)
-        boolean isEqual = (str1 == str2);
+import java.util.ArrayList;
+import java.util.List;
+
+public class Bug3 {
+
+    public static List<String> removeShortStrings(List<String> strings, int minLength) {
+        // minLength-dən qısa olan mətnləri siyahıdan silmək nəzərdə tutulub
+        for (int i = 0; i < strings.size(); i++) {
+            if (strings.get(i).length() < minLength) {
+                strings.remove(i);
+            }
+        }
+        return strings;
+    }
+
+    public static boolean compareUserIds(Integer id1, Integer id2) {
+        // İki Integer obyektini bərabərlik üçün müqayisə edir
+        return id1 == id2;
+    }
+
+    public static void main(String[] args) {
+        List<String> words = new ArrayList<>(List.of("a", "b", "hello", "c", "world"));
+        System.out.println("Filtrlənmiş: " + removeShortStrings(words, 3));
         
-        System.out.println("First string: " + str1);
-        System.out.println("Second string: " + str2);
-        System.out.println("Comparison result: " + isEqual);
-        
-        return isEqual;
+        Integer a = 200;
+        Integer b = 200;
+        System.out.println("İD-lər uyğundur: " + compareUserIds(a, b));
     }
 }
