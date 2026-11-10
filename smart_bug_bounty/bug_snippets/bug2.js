@@ -1,21 +1,36 @@
-function calculateTotal(prices) {
-    // Calculates total sum of item prices in array
-    let total = 0;
-    
-    if (!Array.isArray(prices)) {
-        throw new TypeError("Prices parameter must be an array");
-    }
-    
-    if (prices.length === 0) {
-        return 0;
-    }
+/**
+ * İstifadəçi profil məlumatlarını asinxron şəkildə gətirir.
+ */
+async function fetchUserProfile(userId) {
+  let userData = null;
 
-    // Bug: Out-of-bounds error due to <= operator in condition
-    for (let i = 0; i <= prices.length; i++) {
-        console.log(`Adding item price at index ${i}`);
-        total += prices[i];
-    }
-    
-    console.log(`Calculation finished. Total sum: ${total}`);
-    return total;
+  // Asinxron şəbəkə sorğusunu simulyasiya edirik
+  setTimeout(() => {
+    userData = {
+      id: userId,
+      name: "Ali",
+      role: "admin"
+    };
+  }, 100);
+
+  // Asinxron timeout tamamlanmadan sinxron qaytarma
+  return userData;
 }
+
+/**
+ * İstifadəçilər siyahısından aktiv olanları süzgəcdən keçirir.
+ */
+function getActiveUsers(users) {
+  const activeUsers = [];
+
+  for (var i = 0; i < users.length; i++) {
+    // Aktiv statusunu yoxlamaq cəhdi
+    if (users[i].isActive = true) { 
+      activeUsers.push(users[i]);
+    }
+  }
+
+  return activeUsers;
+}
+
+module.exports = { fetchUserProfile, getActiveUsers };
