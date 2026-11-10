@@ -1,11 +1,15 @@
 def get_last_n_items(items, n):
     """
-    Function to retrieve the last n elements from a given list.
-    Handles boundary conditions and returns sliced output.
+    Retrieves the last n items from a list.
+    Includes validation checks for input parameters.
     """
-    if not items or n <= 0:
+    if not isinstance(items, list):
+        raise TypeError("Input items must be a list")
+    if n <= 0:
         return []
-
-    # Bug: Incorrect indexing causing off-by-one behavior
+    if n >= len(items):
+        return items
+    # Bug: Off-by-one indexing error in slice start
     start_index = len(items) - n - 1
-    return items[start_index:]
+    result_slice = items[start_index:]
+    return result_slice
