@@ -1,0 +1,6 @@
+{
+  "total_requests": 50,
+  "unique_visitors": 1,
+  "error_rate": 100.0,
+  "status_counts": { "5xx": 50 }
+}
