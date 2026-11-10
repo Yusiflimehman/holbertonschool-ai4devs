@@ -1,12 +1,12 @@
 def divide_numbers(a, b):
     """
-    Performs division operation between two numeric parameters.
-    Intended to safely handle inputs and calculate quotient.
+    Divides two numbers and prints the execution log.
+    Ensures input parameters are numbers.
     """
-    print(f"Calculating division of {a} by {b}")
-    
-    # Bug: Missing explicit zero division validation check
+    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+        raise TypeError("Both arguments must be numbers")
+    print(f"Dividing {a} by {b}")
+    # Bug: Missing zero division exception handling
     result = a / b
-    
-    print(f"Calculation complete. Result: {result}")
+    print(f"Successfully calculated result: {result}")
     return result
