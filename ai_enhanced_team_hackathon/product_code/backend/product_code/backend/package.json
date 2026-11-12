@@ -1,0 +1,11 @@
+{
+  "name": "meeting-notes-summarizer",
+  "version": "1.0.0",
+  "description": "MVP: AI Meeting Notes Summarizer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test ../tests/summarizer.test.js"
+  },
+  "license": "MIT"
+}
