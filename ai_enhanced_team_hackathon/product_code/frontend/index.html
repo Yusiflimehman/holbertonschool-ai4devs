@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Meeting Notes Summarizer</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 16px; color: #222; }
+    h1 { font-size: 24px; }
+    textarea { width: 100%; height: 180px; padding: 10px; font-size: 14px; box-sizing: border-box; }
+    button { margin-top: 10px; padding: 10px 18px; font-size: 14px; cursor: pointer; }
+    #error { color: #b00020; margin-top: 10px; }
+    .card { border: 1px solid #ddd; border-radius: 8px; padding: 12px 16px; margin-top: 16px; }
+    .card h2 { font-size: 16px; margin-top: 0; }
+    li.done { text-decoration: line-through; color: #777; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h1>AI Meeting Notes Summarizer</h1>
+  <p>Paste your meeting transcript and get a summary, decisions and action items.</p>
+
+  <textarea id="transcript" placeholder="Paste the meeting transcript here..."></textarea>
+  <br>
+  <button id="summarizeBtn">Summarize</button>
+  <button id="copyBtn" class="hidden">Copy as Markdown</button>
+  <div id="error"></div>
+
+  <div id="result" class="hidden">
+    <div class="card"><h2>Summary</h2><p id="summary"></p></div>
+    <div class="card"><h2>Decisions</h2><ul id="decisions"></ul></div>
+    <div class="card"><h2>Action Items</h2><ul id="actions"></ul></div>
+  </div>
+
+  <script>
+    const transcriptEl = document.getElementById("transcript");
+    const errorEl = document.getElementById("error");
+    const resultEl = document.getElementById("result");
+    const copyBtn = document.getElementById("copyBtn");
+    let lastResult = null;
+
+    function render(data) {
+      lastResult = data;
+      document.getElementById("summary").textContent = data.summary || "No summary.";
+
+      const decisions = document.getElementById("decisions");
+      decisions.innerHTML = "";
+      if (data.decisions.length === 0) decisions.innerHTML = "<li>No decisions found.</li>";
+      data.decisions.forEach((d) => {
+        const li = document.createElement("li");
+        li.textContent = d;
+        decisions.appendChild(li);
+      });
+
+      const actions = document.getElementById("actions");
+      actions.innerHTML = "";
+      if (data.actionItems.length === 0) actions.innerHTML = "<li>No action items found.</li>";
+      data.actionItems.forEach((a) => {
+        const li = document.createElement("li");
+        const box = document.createElement("input");
+        box.type = "checkbox";
+        box.addEventListener("change", () => li.classList.toggle("done", box.checked));
+        li.appendChild(box);
+        li.append(` ${a.task} (Owner: ${a.owner}, Due: ${a.due})`);
+        actions.appendChild(li);
+      });
+
+      resultEl.classList.remove("hidden");
+      copyBtn.classList.remove("hidden");
+    }
+
+    document.getElementById("summarizeBtn").addEventListener("click", async () => {
+      errorEl.textContent = "";
+      const transcript = transcriptEl.value;
+      if (!transcript.trim()) {
+        errorEl.textContent = "Please paste a transcript first.";
+        return;
+      }
+      try {
+        const res = await fetch("/api/summarize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ transcript }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Request failed");
+        render(data);
+      } catch (err) {
+        errorEl.textContent = "Error: " + err.message + " (your transcript is kept, try again)";
+      }
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      if (!lastResult) return;
+      const md = [
+        "# Meeting Notes", "", "## Summary", lastResult.summary, "",
+        "## Decisions", ...lastResult.decisions.map((d) => "- " + d), "",
+        "## Action Items",
+        ...lastResult.actionItems.map((a) => `- [ ] ${a.task} (Owner: ${a.owner}, Due: ${a.due})`),
+      ].join("\n");
+      await navigator.clipboard.writeText(md);
+      copyBtn.textContent = "Copied!";
+      setTimeout(() => (copyBtn.textContent = "Copy as Markdown"), 1500);
+    });
+  </script>
+</body>
+</html>
